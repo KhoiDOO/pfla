@@ -26,7 +26,7 @@ class PerAvg(Server):
             if i%self.eval_gap == 0:
                 print(f"\n-------------Round number: {i}-------------")
                 print("\nEvaluate global model with one step update")
-                if args.force_evaluate:
+                if self.args.force_evaluate:
                     self.evaluate()
                 else:
                     self.evaluate_one_step()

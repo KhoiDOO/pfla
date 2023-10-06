@@ -21,7 +21,7 @@ if __name__ == "__main__":
                 for _m in m:
                     for _go in go:
                         cmd_lst.append(
-                            f"python -u main.py -lbs 16 -nc {_nc} -jr 1 -nb 10 -data {_ds['name']} -nb {_ds['#cls']} -m {_m} -algo {_algo} -gr 100 -did 0 -bt 0.001 -go {_go}\n"
+                            f"python -u main.py -lbs 16 -nc {_nc} -jr 1 -nb 10 -data {_ds['name']} -nb {_ds['#cls']} -m {_m} -algo {_algo} -gr 100 -did 0 -bt 0.001 -go {_go} -fceal\n"
                         )
                         
     with open(run_file, mode='w') as file:
