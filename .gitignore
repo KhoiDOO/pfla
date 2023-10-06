@@ -165,3 +165,5 @@ runs/
 wandb/
 runs/
 *.sh
+*.json
+models/
