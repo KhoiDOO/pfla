@@ -1,0 +1,16 @@
+{   
+    "-algo" : ["Recon", "PerAvg", "FedAvg", "FedROD", "FedBABU", "FedPAC"],
+    "-data" : [
+        {
+            "name" : "Cifar10",
+            "#cls" : 10
+        },
+        {
+            "name" : "Cifar100",
+            "#cls" : 100
+        }
+    ],
+    "-nc" : [20, 40, 60],
+    "-m" : ["cnn20"],
+    "-go" : ["train"]
+}

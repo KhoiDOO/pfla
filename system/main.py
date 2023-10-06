@@ -40,6 +40,7 @@ from flcore.servers.serverfml import FML
 from flcore.servers.serverkd import FedKD
 from flcore.servers.serverpcl import FedPCL
 from flcore.servers.servercp import FedCP
+from flcore.servers.serverrecon import Recon
 
 from flcore.trainmodel.models import *
 
@@ -95,6 +96,20 @@ def run(args):
                 args.model = Digit5CNN().to(args.device)
             else:
                 args.model = FedAvgCNN(in_features=3, num_classes=args.num_classes, dim=10816).to(args.device)
+        
+        #==========================================================================================
+        elif model_str == "cnn20": # non-convex
+            if "mnist" in args.dataset:
+                args.model = FedAvgCNN20(in_features=1, num_classes=args.num_classes, dim=1024).to(args.device)
+            elif "Cifar10" in args.dataset:
+                args.model = FedAvgCNN20(in_features=3, num_classes=args.num_classes, dim=1600).to(args.device)
+            elif "omniglot" in args.dataset:
+                args.model = FedAvgCNN20(in_features=1, num_classes=args.num_classes, dim=33856).to(args.device)
+                # args.model = CifarNet(num_classes=args.num_classes).to(args.device)
+            elif "Digit5" in args.dataset:
+                args.model = Digit5CNN().to(args.device)
+            else:
+                args.model = FedAvgCNN20(in_features=3, num_classes=args.num_classes, dim=10816).to(args.device)
 
         elif model_str == "dnn": # non-convex
             if "mnist" in args.dataset:
@@ -165,7 +180,7 @@ def run(args):
         else:
             raise NotImplementedError
 
-        print(args.model)
+        # print(args.model)
 
         # select algorithm
         if args.algorithm == "FedAvg":
@@ -173,6 +188,12 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedAvg(args, i)
+        
+        elif args.algorithm == "Recon":
+            args.head = copy.deepcopy(args.model.fc)
+            args.model.fc = nn.Identity()
+            args.model = BaseHeadSplit(args.model, args.head)
+            server = Recon(args, i)
 
         elif args.algorithm == "Local":
             server = Local(args, i)
@@ -303,7 +324,6 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedCP(args, i)
-            
         else:
             raise NotImplementedError
 
@@ -366,6 +386,7 @@ if __name__ == "__main__":
     parser.add_argument('-bnpc', "--batch_num_per_client", type=int, default=2)
     parser.add_argument('-nnc', "--num_new_clients", type=int, default=0)
     parser.add_argument('-fte', "--fine_tuning_epoch", type=int, default=0)
+    parser.add_argument('-fceal', "--force_evaluate", action='store_true')
     # practical
     parser.add_argument('-cdr', "--client_drop_rate", type=float, default=0.0,
                         help="Rate for clients that train but drop out")
@@ -427,6 +448,10 @@ if __name__ == "__main__":
     parser.add_argument('-mlr', "--mentee_learning_rate", type=float, default=0.005)
     parser.add_argument('-Ts', "--T_start", type=float, default=0.95)
     parser.add_argument('-Te', "--T_end", type=float, default=0.98)
+    
+    # Recon
+    parser.add_argument('-sc', "--s_score", type=float, default=0)
+    parser.add_argument( "--top_k", type=int, default=2)
 
 
     args = parser.parse_args()
