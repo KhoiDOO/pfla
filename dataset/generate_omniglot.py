@@ -1,5 +1,5 @@
 import numpy as np
-import os
+import os, sys
 import random
 import torchvision
 from utils.dataset_utils import split_data, save_file
@@ -12,14 +12,14 @@ dir_path = "omniglot/"
 
 
 # Allocate data to users
-def generate_omniglot(dir_path):
+def generate_omniglot(dir_path, num_clients):
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
         
     # Setup directory for train/test data
-    config_path = dir_path + "config.json"
-    train_path = dir_path + "train/"
-    test_path = dir_path + "test/"
+    config_path = dir_path + f"{num_clients}/config.json"
+    train_path = dir_path + f"{num_clients}/train/"
+    test_path = dir_path + f"{num_clients}/test/"
 
     if not os.path.exists(train_path):
         os.makedirs(train_path)
@@ -32,8 +32,8 @@ def generate_omniglot(dir_path):
     torchvision.datasets.Omniglot(root=root, background=True, download=True)
     torchvision.datasets.Omniglot(root=root, background=False, download=True)
 
-    X = [[] for _ in range(20)]
-    y = [[] for _ in range(20)]
+    X = [[] for _ in range(num_clients)]
+    y = [[] for _ in range(num_clients)]
 
     dir = os.path.join(root, "omniglot-py/")
     dirs = os.listdir(dir)
@@ -59,9 +59,13 @@ def generate_omniglot(dir_path):
     print(f'Number of labels: {label}')
 
     train_data, test_data = split_data(X, y)
-    save_file(config_path, train_path, test_path, train_data, test_data, 20, label, 
+    save_file(config_path, train_path, test_path, train_data, test_data, num_clients, label, 
         None, None, None, None)
 
 
 if __name__ == "__main__":
-    generate_omniglot(dir_path)
+    niid = True if sys.argv[1] == "noniid" else False
+    balance = True if sys.argv[2] == "balance" else False
+    partition = sys.argv[3] if sys.argv[3] != "-" else None
+    num_clients = int(sys.argv[4]) if sys.argv[3] else 20
+    generate_omniglot(dir_path, num_clients)
