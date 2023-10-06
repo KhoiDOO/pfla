@@ -86,8 +86,8 @@ class Server(object):
 
     def set_clients(self, clientObj):
         for i, train_slow, send_slow in zip(range(self.num_clients), self.train_slow_clients, self.send_slow_clients):
-            train_data = read_client_data(self.dataset, i, is_train=True)
-            test_data = read_client_data(self.dataset, i, is_train=False)
+            train_data = read_client_data(self.dataset, i, is_train=True, client_cnt=self.num_clients)
+            test_data = read_client_data(self.dataset, i, is_train=False, client_cnt=self.num_clients)
             client = clientObj(self.args, 
                             id=i, 
                             train_samples=len(train_data), 
@@ -363,8 +363,8 @@ class Server(object):
 
     def set_new_clients(self, clientObj):
         for i in range(self.num_clients, self.num_clients + self.num_new_clients):
-            train_data = read_client_data(self.dataset, i, is_train=True)
-            test_data = read_client_data(self.dataset, i, is_train=False)
+            train_data = read_client_data(self.dataset, i, is_train=True, client_cnt=self.num_clients)
+            test_data = read_client_data(self.dataset, i, is_train=False, client_cnt=self.num_clients)
             client = clientObj(self.args, 
                             id=i, 
                             train_samples=len(train_data), 
