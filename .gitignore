@@ -163,6 +163,8 @@ dataset/Cifar10
 dataset/Cifar100
 dataset/mnist
 dataset/omniglot
+dataset/agnews
+dataset/sogounews
 
 results/
 runs/
