@@ -10,7 +10,7 @@ from torchtext.vocab import build_vocab_from_iterator
 
 random.seed(1)
 np.random.seed(1)
-num_clients = 20
+# num_clients = 20
 num_classes = 4
 max_len = 200
 dir_path = "agnews/"
@@ -22,9 +22,9 @@ def generate_agnews(dir_path, num_clients, num_classes, niid, balance, partition
         os.makedirs(dir_path)
         
     # Setup directory for train/test data
-    config_path = dir_path + "config.json"
-    train_path = dir_path + "train/"
-    test_path = dir_path + "test/"
+    config_path = dir_path + f"{num_clients}/config.json"
+    train_path = dir_path + f"{num_clients}/train/"
+    test_path = dir_path + f"{num_clients}/test/"
 
     if check(config_path, train_path, test_path, num_clients, num_classes, niid, balance, partition):
         return
@@ -88,5 +88,6 @@ if __name__ == "__main__":
     niid = True if sys.argv[1] == "noniid" else False
     balance = True if sys.argv[2] == "balance" else False
     partition = sys.argv[3] if sys.argv[3] != "-" else None
+    num_clients = int(sys.argv[4]) if sys.argv[3] else 20
 
     generate_agnews(dir_path, num_clients, num_classes, niid, balance, partition)
