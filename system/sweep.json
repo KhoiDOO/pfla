@@ -15,9 +15,39 @@
             "name" : "mnist",
             "#cls" : 10,
             "-m" : "dnn"
+        },
+        {
+            "name" : "agnews",
+            "#cls" : 4,
+            "-m" : "Transformer"
+        },
+        {
+            "name" : "sogounews",
+            "#cls" : 5,
+            "-m" : "Transformer"
         }
     ],
-    "-nc_old" : [20],
-    "-nc" : [40, 60, 80, 100],
+    "-nc" : [
+        {
+            "nc" : 20,
+            "gr" : 100
+        }, 
+        {
+            "nc" : 40,
+            "gr" : 200
+        }, 
+        {
+            "nc" : 60,
+            "gr" : 400
+        },
+        {
+            "nc" : 80,
+            "gr" : 800
+        },
+        {
+            "nc" : 100,
+            "gr" : 1600
+        }
+    ],
     "-go" : ["train"]
 }
