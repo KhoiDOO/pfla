@@ -169,3 +169,4 @@ runs/
 wandb/
 runs/
 models/
+*.sh
