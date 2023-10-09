@@ -14,7 +14,7 @@
         {
             "name" : "mnist",
             "#cls" : 10,
-            "-m" : "cnn20"
+            "-m" : "dnn"
         }
     ],
     "-nc_old" : [20],
