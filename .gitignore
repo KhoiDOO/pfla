@@ -172,3 +172,4 @@ wandb/
 runs/
 models/
 *.sh
+*.csv
