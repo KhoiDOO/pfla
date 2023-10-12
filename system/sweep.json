@@ -20,11 +20,6 @@
             "name" : "agnews",
             "#cls" : 4,
             "-m" : "Transformer"
-        },
-        {
-            "name" : "sogounews",
-            "#cls" : 5,
-            "-m" : "Transformer"
         }
     ],
     "-nc" : [

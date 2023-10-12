@@ -1,5 +1,6 @@
 import os 
 import json
+from random import randint 
 
 if __name__ == "__main__":
     # run_file = os.getcwd() + "/runv2.sh"
@@ -12,16 +13,19 @@ if __name__ == "__main__":
     nc = sweep_data["-nc"]
     go = sweep_data["-go"]
     
+    device = 0
+    
     for _algo in algo:
         cmd_lst = []
         run_file = os.getcwd() + f"/{_algo}.sh"
+        device = 1 if device == 0 else 0
         for _ds in ds:
             for _nc in nc:
                 if _nc["nc"] == 20 and _ds["name"] in ["Cifar10", "Cifar100", "mnist"]:
                     continue
                 else:
                     cmd_lst.append(
-                        f"python -u main.py -lbs 16 -nc {_nc['nc']} -jr 1 -nb 10 -data {_ds['name']} -nb {_ds['#cls']} -m {_ds['-m']} -algo {_algo} -gr {_nc['gr']} -did 0 -bt 0.001 -go train -fceal\n"
+                        f"python -u main.py -lbs 16 -nc {_nc['nc']} -jr 1 -nb 10 -data {_ds['name']} -nb {_ds['#cls']} -m {_ds['-m']} -algo {_algo} -gr {_nc['gr']} -did 0 -bt 0.001 -go train -fceal --device_id {device}\n"
                     )
                         
         with open(run_file, mode='w') as file:
